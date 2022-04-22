@@ -17,6 +17,11 @@ public class ApiTests
         true.Should().BeTrue();
     }
 
+    public void ThisTestShouldAlwaysFail()
+    {
+        true.Should().BeFalse();
+    }
+
     public async Task LoadingANonExistentRouteShouldFail()
     {
         var result = await _context.Client.GetAsync("/non-existent");

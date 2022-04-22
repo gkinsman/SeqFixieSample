@@ -48,9 +48,13 @@ public class AppTestProject : ITestProject
                     foreach(var test in testClass.Tests) {
                         mapEnricher.Set("TestName", test.Name);
                         mapEnricher.Set("TestClass", testClass.Type.Name);
-                        using (Operation.Time("Executing test {TestName}", test.Name)) {
-                            await test.Run(instance);
-                        }
+                        using var op =
+                            Operation.At(LogEventLevel.Information, LogEventLevel.Error)
+                                .Begin("Executing test {TestName}", test.Name);
+
+                        var result = await test.Run(instance);
+                        if (result is Failed failure) op.Abandon(failure.Reason);
+                        else op.Complete();
                     }
                 }
             }

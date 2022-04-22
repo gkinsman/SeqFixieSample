@@ -13,15 +13,12 @@ public class ApiTestContext : IDisposable
             .WithWebHostBuilder(builder => { });
         Client = app.CreateClient();
 
-   
-        
         Logger = Log.ForContext<ApiTestContext>();
     }
 
-    public HttpClient Client { get;  }
+    public HttpClient Client { get; }
 
     public ILogger Logger { get; }
-
 
     public void Dispose()
     {
